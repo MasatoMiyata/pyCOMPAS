@@ -1,44 +1,43 @@
+from typing import Tuple
 import math
+import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rcParams['font.family'] = 'Noto Sans CJK JP'
+plt.rcParams['grid.linestyle']='--'
+plt.rcParams['grid.linewidth'] = 0.5
 
-def DEL(W):
+from DEL import DEL
+from EQT import EQT
+from NUMDAY import NUMDAY
+
+def SOPOS(FN:float,EL:float,M:int,N:int,HJ:int) -> Tuple[float, float, float]:
     """
-    日赤緯[°]を求める関数（滝沢による）
+    太陽位置を算出する関数
+
+    Args:
+        FN (float): 緯度
+        EL (float): 経度
+        M (int): 月
+        N (int): 日
+        HJ (int): 時刻
+
+    Returns:
+        SH (float): 太陽⾼度(h)の正弦
+        SA (float): 太陽方位角(A)の正弦 
+        CA (float): 太陽方位角(A)の余弦
     """
-
-    y = 0.3622133 \
-        - 23.24763  * math.cos( W + 0.153231) \
-        - 0.3368908 * math.cos(2.0 * W + 0.2070988) \
-        - 0.1852646 * math.cos(3.0 * W + 0.6201293)
-
-    return y
-
-def EQT(W):
-
-    y = -0.0002786409 \
-        + 0.1227715   * math.cos( W + 1.498311) \
-        - 0.1654575   * math.cos(2.0 * W - 1.261546) \
-        - 0.005353830 * math.cos(3.0 * W - 1.157100)
-
-    return y
-
-def D(M,N):
-
-    y = 30*(M-1)+(M+M/8)/2-(M+7)/10+N
-
-    return y
-
-def SOPOS(FN,EL,M,N,HJ):
     
-    PAI = 3.141593
     RADI = 0.01745329
     ELS = 135.0
 
-    W = PAI * D(M,N) / 183.0
+    W = 2 * math.pi * NUMDAY(M,N) / 366
 
     T = 15.0 * (HJ - 12.0 + EQT(W)) + EL - ELS
     # T = 15.0 * (HJ - 12.0)
 
-    TJ = T/15.+12
+    TJ = T/15.0+12
+
     FN1=FN*RADI
     SF=math.sin(FN1)
     CF=math.cos(FN1)
@@ -62,27 +61,51 @@ def SOPOS(FN,EL,M,N,HJ):
         SA=0.0
         CA=0.0
 
-    return SH, SA, CA, TJ
+    return SH, SA, CA
 
 
 if __name__ == '__main__':
 
     FN = 35.68
     EL = 139.77
-    M = 8
-    N = 23
+    N = 1
 
-    for hour in range(0,24):
+    SH = np.zeros([24,12])
+    SA = np.zeros([24,12])
+    CA = np.zeros([24,12])
 
-        HJ = hour
-        SH, SA, CA, TJ = SOPOS(FN,EL,M,N,HJ)
+    for M in range(0,12):
+        for HJ in range(0,24):
+            SH[HJ,M], SA[HJ,M], CA[HJ,M] = SOPOS(FN,EL,M,N,HJ)
 
-        print(SH, SA, CA, TJ)
+    plt.figure(figsize=(10,5))
+    for M in range(0,6):
+        plt.plot(SH[:,2*M], label = f"sin(h): {2*M+1}月1日")
+    plt.xlabel("時刻")
+    plt.ylabel("sin(h)")
+    plt.xlim([0,30])
+    plt.ylim([0,1.01])
+    plt.legend()
+    plt.grid()
 
+    plt.figure(figsize=(10,5))
+    for M in range(0,6):
+        plt.plot(SA[:,2*M], label = f"sin(A): {2*M+1}月1日")
+    plt.xlabel("時刻")
+    plt.ylabel("sin(A)")
+    plt.xlim([0,30])
+    plt.ylim([-1.05,1.05])
+    plt.legend()
+    plt.grid()
 
+    plt.figure(figsize=(10,5))
+    for M in range(0,6):
+        plt.plot(CA[:,2*M], label = f"cos(A): {2*M+1}月1日")
+    plt.xlabel("時刻")
+    plt.ylabel("cos(A)")
+    plt.xlim([0,30])
+    plt.ylim([-1.05,1.05])
+    plt.legend()
+    plt.grid()
 
-
-
-
-
-
+    plt.show()
