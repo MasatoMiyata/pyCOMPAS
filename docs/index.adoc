@@ -1,0 +1,22 @@
+:lang: ja
+:doctype: book
+:toc: left
+:toclevels: 2
+:toc-title: COMPAS
+:sectnums: 
+:sectnumlevels: 4
+:sectlinks: 
+:linkattrs:
+:icons: font
+:source-highlighter: coderay
+:example-caption: 例
+:table-caption: 表
+:figure-caption: 図
+:docname: = Builelib manual
+:stem: latexmath
+:xrefstyle: short
+
+= COMPAS プログラム説明書
+
+>>>
+include::SOPOS.adoc[]
