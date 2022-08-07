@@ -11,16 +11,17 @@ from DEL import DEL
 from EQT import EQT
 from NUMDAY import NUMDAY
 
-def SOPOS(FN:float,EL:float,M:int,N:int,HJ:int) -> Tuple[float, float, float]:
+
+def SOPOS(LA:float,LO:float,M:int,N:int,HJ:int) -> Tuple[float, float, float]:
     """
     太陽位置を算出する関数
 
     Args:
-        FN (float): 緯度
-        EL (float): 経度
+        LA (float): 緯度
+        LO (float): 経度
         M (int): 月
         N (int): 日
-        HJ (int): 時刻
+        HJ (int): 時刻（中央標準時）
 
     Returns:
         SH (float): 太陽⾼度(h)の正弦
@@ -29,28 +30,35 @@ def SOPOS(FN:float,EL:float,M:int,N:int,HJ:int) -> Tuple[float, float, float]:
     """
     
     RADI = 0.01745329
-    ELS = 135.0
+    LOs = 135.0
 
     W = 2 * math.pi * NUMDAY(M,N) / 366
 
-    T = 15.0 * (HJ - 12.0 + EQT(W)) + EL - ELS
+    # 時角を算出する。
+    T = 15.0 * (HJ - 12.0 + EQT(W)) + LO - LOs
+
+    # 中央標準時での太陽位置を求めることになっているが、
+    # 太陽時における太陽位置を求めようにするときには、以下のコメント⾏を⽣かすとよい。
     # T = 15.0 * (HJ - 12.0)
+    # 太陽時
+    # TJ = T/15.0+12
 
-    TJ = T/15.0+12
+    # 緯度をradに変換する。
+    FN1 = LA*RADI
+    SF  = math.sin(FN1)
+    CF  = math.cos(FN1)
 
-    FN1=FN*RADI
-    SF=math.sin(FN1)
-    CF=math.cos(FN1)
-    DEL1=DEL(W)*RADI
+    # 日赤緯の算出
+    DEL1 = DEL(W)*RADI
+    SD = math.sin(DEL1)
+    CD = math.cos(DEL1)
 
-    SD=math.sin(DEL1)
-    CD=math.cos(DEL1)
+    # 時角をradに変換する。
+    T1 = T*RADI
+    CT = math.cos(T1)
+    ST = math.sin(T1)
 
-    T1=T*RADI
-    CT=math.cos(T1)
-    ST=math.sin(T1)
-
-    SH=SF*SD+CF*CD*CT
+    SH = SF*SD + CF*CD*CT
 
     if (SH > 0):
         CH=math.sqrt(1.0-SH**2)
@@ -66,8 +74,8 @@ def SOPOS(FN:float,EL:float,M:int,N:int,HJ:int) -> Tuple[float, float, float]:
 
 if __name__ == '__main__':
 
-    FN = 35.68
-    EL = 139.77
+    LA = 35.68
+    LO = 139.77
     N = 1
 
     SH = np.zeros([24,12])
@@ -76,7 +84,7 @@ if __name__ == '__main__':
 
     for M in range(0,12):
         for HJ in range(0,24):
-            SH[HJ,M], SA[HJ,M], CA[HJ,M] = SOPOS(FN,EL,M,N,HJ)
+            SH[HJ,M], SA[HJ,M], CA[HJ,M] = SOPOS(LA,LO,M,N,HJ)
 
     plt.figure(figsize=(10,5))
     for M in range(0,6):
