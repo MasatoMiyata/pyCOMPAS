@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from typing import Tuple
 import math
 from PS import PS
 from FG import FG
@@ -44,62 +44,82 @@ def calc_XF(H,T):
     XF = (H-0.240*T) / (597.3+0.441*T)
     return XF
 
-def PSY(Tdb, Twb=None, Tdew=None, R=None, X=None, P=None, H=None):
+def PSY(Tdb:float, Twb:float=None, Tdew:float=None, R:float=None, X:float=None, P:float=None, H:float=None) -> Tuple[float,float,float,float,float,float,float]:
+    """
+    乾球温度と「湿球温度、露点温度、相対湿度、絶対湿度、水蒸気分圧、エンタルピー」のいずれかから
+    乾球温度、湿球温度、露点温度、相対湿度、絶対湿度、水蒸気分圧、エンタルピーを算出する関数
 
-    if Twb is not None: # 湿球温度が入力された場合
+    Args:
+        Tdb (float): 乾球温度[℃]
+        Twb (float, optional): 湿球温度[℃]. Defaults to None.
+        Tdew (float, optional): 露点温度[℃]. Defaults to None.
+        R (float, optional): 相対湿度[%]. Defaults to None.
+        X (float, optional): 絶対湿度[kg/kg]. Defaults to None.
+        P (float, optional): 水蒸気分圧[mmHg]. Defaults to None.
+        H (float, optional): エンタルピー[kcal/kJ]. Defaults to None.
 
-        P1 = PS(Twb) # 湿球温度のときの飽和水蒸気圧[atm]
-        X0 = calc_A(P1) # 湿球温度のときの飽和絶対湿度[kg/kg]
-        X  = calc_B(X0,Tdb,Twb)  # 絶対湿度[kg/kg]
-        Tdew = calc_TD(X)  # 露点温度[℃]
-        R  = calc_C(X) / PS(Tdb) * 100  # 相対湿度[%]
-        P  = calc_CH(X) # 水蒸気分圧[mmHg]
-        H  = calc_HF(Tdb, X)   # エンタルピー[kcal/kg]
+    Returns:
+        Tuple[float,float,float,float,float,float,float]: 乾球温度、湿球温度、露点温度、相対湿度、絶対湿度、水蒸気分圧、エンタルピー
+    """
 
-    elif Tdew is not None: # 露点温度が入力された場合
+    if Tdb is not None:
 
-        P1 = PS(Tdew)   # 露点温度のときの飽和水蒸気分圧[atm]
-        P  = P1 * 760   # 水蒸気分圧[mmHg]
-        X  = calc_A(P1) # 絶対湿度[kg/kg] 
-        H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]
-        Twb = FG(H,X)   # 湿球温度[℃]
-        R  = P1 / PS(Tdb) * 100  # 相対湿度[%]
+        if Twb is not None: # 湿球温度が入力された場合
 
-    elif R is not None: # 相対湿度が入力された場合
+            P1 = PS(Twb) # 湿球温度のときの飽和水蒸気圧[atm]
+            X0 = calc_A(P1) # 湿球温度のときの飽和絶対湿度[kg/kg]
+            X  = calc_B(X0,Tdb,Twb)  # 絶対湿度[kg/kg]
+            Tdew = calc_TD(X)  # 露点温度[℃]
+            R  = calc_C(X) / PS(Tdb) * 100  # 相対湿度[%]
+            P  = calc_CH(X) # 水蒸気分圧[mmHg]
+            H  = calc_HF(Tdb, X)   # エンタルピー[kcal/kg]
 
-        P1 = PS(Tdb) * R / 100  # 水蒸気分圧[atm]
-        P  = P1 * 760   # 水蒸気分圧[mmHg]
-        X  = calc_A(P1) # 絶対湿度[kg/kg] 
-        H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]
-        Twb = FG(H,X)   # 湿球温度[℃]
-        Tdew = calc_TD(X)  # 露点温度[℃]
+        elif Tdew is not None: # 露点温度が入力された場合
 
-    elif X is not None: # 絶対湿度が入力された場合
+            P1 = PS(Tdew)   # 露点温度のときの飽和水蒸気分圧[atm]
+            P  = P1 * 760   # 水蒸気分圧[mmHg]
+            X  = calc_A(P1) # 絶対湿度[kg/kg] 
+            H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]
+            Twb = FG(H,X)   # 湿球温度[℃]
+            R  = P1 / PS(Tdb) * 100  # 相対湿度[%]
 
-        H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]
-        Twb = FG(H,X)   # 湿球温度[℃]
-        Tdew = calc_TD(X)  # 露点温度[℃]
-        P  = calc_CH(X) # 水蒸気分圧[mmHg]
-        R  = calc_C(X) / PS(Tdb) * 100  # 相対湿度[%]
+        elif R is not None: # 相対湿度が入力された場合
 
-    elif P is not None: # 水蒸気分圧[mmHg]が入力された場合
+            P1 = PS(Tdb) * R / 100  # 水蒸気分圧[atm]
+            P  = P1 * 760   # 水蒸気分圧[mmHg]
+            X  = calc_A(P1) # 絶対湿度[kg/kg] 
+            H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]
+            Twb = FG(H,X)   # 湿球温度[℃]
+            Tdew = calc_TD(X)  # 露点温度[℃]
 
-        X = calc_AH(P)  # 絶対湿度[kg/kg]
-        H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]   
-        Twb = FG(H,X)   # 湿球温度[℃]
-        Tdew = calc_TD(X)  # 露点温度[℃]
-        R  = P / (PS(Tdb)*760) * 100  # 相対湿度[%]
+        elif X is not None: # 絶対湿度が入力された場合
 
-    elif H is not None: # エンタルピーが入力された場合
+            H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]
+            Twb = FG(H,X)   # 湿球温度[℃]
+            Tdew = calc_TD(X)  # 露点温度[℃]
+            P  = calc_CH(X) # 水蒸気分圧[mmHg]
+            R  = calc_C(X) / PS(Tdb) * 100  # 相対湿度[%]
 
-        X  = calc_XF(H,Tdb)  # 絶対湿度[kg/kg]
-        Twb = FG(H,X)  # 湿球温度[℃]
-        Tdew = calc_TD(X)  # 露点温度[℃]
-        R  = calc_C(X) / PS(Tdb) * 100  # 相対湿度[%]
-        P  = calc_CH(X) # 水蒸気分圧[mmHg]
+        elif P is not None: # 水蒸気分圧[mmHg]が入力された場合
 
+            X = calc_AH(P)  # 絶対湿度[kg/kg]
+            H  = calc_HF(Tdb,X)  # エンタルピー[kcal/kg]   
+            Twb = FG(H,X)   # 湿球温度[℃]
+            Tdew = calc_TD(X)  # 露点温度[℃]
+            R  = P / (PS(Tdb)*760) * 100  # 相対湿度[%]
+
+        elif H is not None: # エンタルピーが入力された場合
+
+            X  = calc_XF(H,Tdb)  # 絶対湿度[kg/kg]
+            Twb = FG(H,X)  # 湿球温度[℃]
+            Tdew = calc_TD(X)  # 露点温度[℃]
+            R  = calc_C(X) / PS(Tdb) * 100  # 相対湿度[%]
+            P  = calc_CH(X) # 水蒸気分圧[mmHg]
+
+        else:
+            raise Exception("湿球温度、露点温度、相対湿度、絶対湿度、水蒸気分圧、エンタルピーのいずれかの入力が必要です。")
     else:
-        raise Exception("入力が不正です")
+            raise Exception("乾球温度 Tdb の入力が必要です。")       
 
     return Tdb, Twb, Tdew, R, X, P, H
 
@@ -116,6 +136,7 @@ if __name__ == '__main__':
     # Tdb=26, Twb=18.8, Tdew=14.8, R=50, X=0.0105, P=17.834hPa=13.3788mmHg, H=52.9kJ/kg=12.635kcal/kg
 
     (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,18.8)
+    (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,Twb=18.8)
     print(Tdb, Twb, Tdew, R, X, P, H)
     (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,None,14.8)
     print(Tdb, Twb, Tdew, R, X, P, H)
