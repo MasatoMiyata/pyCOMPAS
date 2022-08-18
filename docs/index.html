@@ -476,10 +476,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_注記">4.5. 注記</a></li>
 </ul>
 </li>
+<li><a href="#_psy_空気状態値の算出">5. PSY: 空気状態値の算出</a>
+<ul class="sectlevel2">
+<li><a href="#_目的_5">5.1. 目的</a></li>
+<li><a href="#_入出力_5">5.2. 入出力</a></li>
+<li><a href="#_使用する関数_5">5.3. 使用する関数</a></li>
+<li><a href="#_計算ロジック_5">5.4. 計算ロジック</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div style="page-break-after: always;"></div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_numday_通し日数の算出"><a class="link" href="#_numday_通し日数の算出">1. NUMDAY: 通し日数の算出</a></h2>
 <div class="sectionbody">
@@ -954,13 +967,616 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_psy_空気状態値の算出"><a class="link" href="#_psy_空気状態値の算出">5. PSY: 空気状態値の算出</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_目的_5"><a class="link" href="#_目的_5">5.1. 目的</a></h3>
+<div class="paragraph">
+<p>乾球温度[℃]と「湿球温度[℃]、露点温度[℃]、相対湿度[%]、絶対湿度[kg/kg]、水蒸気分圧[mmHg]、エンタルピー[kcal/kg]」のいずれかを与えて、乾球温度[℃]、湿球温度[℃]、露点温度[℃]、相対湿度[%]、絶対湿度[kg/kg]、水蒸気分圧[mmHg]、エンタルピー[kcal/kg]を算出する。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_入出力_5"><a class="link" href="#_入出力_5">5.2. 入出力</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">表 10. 入力</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 57.1428%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">変数名</th>
+<th class="tableblock halign-left valign-top">説明</th>
+<th class="tableblock halign-left valign-top">単位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T_{db}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">乾球温度（必須）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T_{wb}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">湿球温度（任意）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T_{dew}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">露点温度（任意）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(R\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">相対湿度（任意）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(X\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">絶対湿度（任意）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kg/kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(P\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">水蒸気分圧（任意）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mmHg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(H\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">エンタルピー（任意）</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kcal/kJ</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">表 11. 出力</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 57.1428%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">変数名</th>
+<th class="tableblock halign-left valign-top">説明</th>
+<th class="tableblock halign-left valign-top">単位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T_{db}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">乾球温度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T_{wb}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">湿球温度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T_{dew}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">露点温度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(R\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">相対湿度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(X\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">絶対湿度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kg/kg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(P\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">水蒸気分圧</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mmHg</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(H\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">エンタルピー</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">kcal/kJ</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_使用する関数_5"><a class="link" href="#_使用する関数_5">5.3. 使用する関数</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>PS</p>
+</li>
+<li>
+<p>FG</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_計算ロジック_5"><a class="link" href="#_計算ロジック_5">5.4. 計算ロジック</a></h3>
+<div class="sect3">
+<h4 id="_サブ関数の定義"><a class="link" href="#_サブ関数の定義">5.4.1. サブ関数の定義</a></h4>
+<div class="paragraph">
+<p>計算に使用するサブ関数を次式で定義する。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>水蒸気分圧 \(P\)[mmHg] から 絶対湿度 \(X\)[kg/kg] を算出する関数AH</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[X = \rm{AH(P)} = \frac{0.622 P}{760-P}\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>水蒸気分圧 \(P_{atm}\)[atm] から 絶対湿度 \(X\) [kg/kg] を算出する関数A</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[X = \rm{A(P_{atm})} = \frac{0.622 P_{atm}}{1-P_{atm}}\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>絶対湿度 \(X\)[kg/kg] から 水蒸気分圧 \(P\)[mmHg] を算出する関数CH</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[P = \rm{CH(X)} = \frac{760 X}{0.622 + X}\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>絶対湿度 \(X\)[kg/kg] から 水蒸気分圧 \(P_{atm}\)[atm] を算出する関数C</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[P_{atm} = \rm{C(X)} = \frac{X}{0.622 + X}\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>湿球温度\(T_{wb}\)[℃]のときの飽和絶対湿度\(X_{s}\)[kg/kg]、乾球温度\(T_{db}\)[℃]、湿球温度\(T_{wb}\)[℃]から、絶対湿度 \(X\)[kg/kg] を算出する関数B</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[X = \rm{B(X_{wb}, T_{db}, T_{wb})} = \frac{ (597.3 - 0.559T_{wb}) X_{s} - 0.240 (T_{db}-T_{wb}) }{ 597.3 + 0.441 T_{db} - T_{wb} }\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>絶対湿度 \(X\)[kg/kg] から露点温度\(T_{dew}\)を算出する関数TD</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[T_{dew} = \rm{TD(X)} = 90.93743 + log(X)(16.98006 + \\
+log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
+0.8045291 | log(X)+5.580150 |\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>乾球温度[℃]と絶対湿度[kg/kg]からエンタルピー[kcal/kg]を算出する関数HF</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[H = \rm{HF(T_{db}, X)} = 0.240 T_{db} + (597.3+0.441T_{db})X\]
+</div>
+</div>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>乾球温度[℃]とエンタルピー[kcal/kg]から絶対湿度[kg/kg]を算出する関数XF</p>
+</li>
+</ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[X = \rm{XF(H, T_{db})} = \frac{H-0.240T_{db}}{597.3+0.441T_{db}}\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_湿球温度が入力された場合"><a class="link" href="#_湿球温度が入力された場合">5.4.2. 湿球温度が入力された場合</a></h4>
+<div class="paragraph">
+<p>乾球温度 \(T_{db}\) と湿球温度 \(T_{wb}\) が入力された場合は、次式で出力を算出する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) のときの飽和水蒸気分圧 \(P_{s}\)[atm]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P_{s} = \rm{PS(T_{wb})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) のときの飽和絶対湿度 \(X_{s}\) [kg/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[X_{s} = \rm{A(P_{s})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>絶対湿度 \(X\) [kg/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[X  = \rm{B(X_{s},T_{db},T_{wb})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>露点温度 \(T_{dew}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{dew} = \rm{TD(X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>相対湿度 \(R\) [%]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[R  = \frac{\rm{C(X)}}{\rm{PS(T_{db})}} \times 100\]
+</div>
+</div>
+<div class="paragraph">
+<p>水蒸気分圧 \(P\) [mmHg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P  = \rm{CH(X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>エンタルピー \(H\) [kcal/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[H  = \rm{HF(T_{db}, X)}\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_露点温度が入力された場合"><a class="link" href="#_露点温度が入力された場合">5.4.3. 露点温度が入力された場合</a></h4>
+<div class="paragraph">
+<p>乾球温度 \(T_{db}\) と露点温度 \(T_{dew}\) が入力された場合は、次式で出力を算出する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>露点温度 \(T_{dew}\) のときの飽和水蒸気分圧 \(P_{atm}\) [atm]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P_{atm} = \rm{PS(T_{dew})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>水蒸気分圧 \(P\) [mmHg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P = P_{atm} \times 760\]
+</div>
+</div>
+<div class="paragraph">
+<p>絶対湿度 \(X\) [kg/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[X  = \rm{A(P_{atm})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>エンタルピー \(H\) [kcal/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[H  = \rm{HF(T_{db},X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{wb} = \rm{FG(H,X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>相対湿度 \(R\) [%]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[R  = \frac{\rm{P_{atm}}}{\rm{PS(T_{db})}} \times 100\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_相対湿度が入力された場合"><a class="link" href="#_相対湿度が入力された場合">5.4.4. 相対湿度が入力された場合</a></h4>
+<div class="paragraph">
+<p>乾球温度 \(T_{db}\) と相対湿度 \(R\) が入力された場合は、次式で出力を算出する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>水蒸気分圧 \(P_{atm}\) [atm]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P_{atm} = \frac{\rm{PS(T_{db})} R}{100}\]
+</div>
+</div>
+<div class="paragraph">
+<p>水蒸気分圧 \(P\) [mmHg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P  = 760 P_{atm}\]
+</div>
+</div>
+<div class="paragraph">
+<p>絶対湿度 \(X\) [kg/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[X  = \rm{A(P_{atm})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>エンタルピー \(H\) [kcal/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[H  = \rm{HF(T_{db},X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{wb} = \rm{FG(H,X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>露点温度 \(T_{dew}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{dew} = \rm{TD(X)}\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_絶対湿度が入力された場合"><a class="link" href="#_絶対湿度が入力された場合">5.4.5. 絶対湿度が入力された場合</a></h4>
+<div class="paragraph">
+<p>乾球温度 \(T_{db}\) と絶対湿度 \(X\) が入力された場合は、次式で出力を算出する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>エンタルピー \(H\) [kcal/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[H  = \rm{HF(T_{db},X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{wb} = \rm{FG(H,X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>露点温度  \(T_{dew}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{dew} = \rm{TD(X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>水蒸気分圧 \(P\) [mmHg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P  = \rm{CH(X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>相対湿度 \(R\) [%]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[R  = \frac{\rm{C(X)}}{\rm{PS(T_{db})}} \times 100\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_水蒸気分圧mmhgが入力された場合"><a class="link" href="#_水蒸気分圧mmhgが入力された場合">5.4.6. 水蒸気分圧[mmHg]が入力された場合</a></h4>
+<div class="paragraph">
+<p>乾球温度 \(T_{db}\) と水蒸気分圧 \(P\) が入力された場合は、次式で出力を算出する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>絶対湿度 \(X\) [kg/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[X = \rm{AH(P)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>エンタルピー \(H\) [kcal/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[H  = \rm{HF(T_{db},X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{wb} = \rm{FG(H,X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>露点温度 \(T_{dew}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{dew} = \rm{D(X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>相対湿度 \(R\) [%]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[R  = \frac{P}{(\rm{PS(T_{db})} 760)} \times 100\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_エンタルピーが入力された場合"><a class="link" href="#_エンタルピーが入力された場合">5.4.7. エンタルピーが入力された場合</a></h4>
+<div class="paragraph">
+<p>乾球温度 \(T_{db}\) とエンタルピー \(H\) が入力された場合は、次式で出力を算出する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>絶対湿度 \(X\) [kg/kg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[X  = \rm{XF(H,T_{db})}\]
+</div>
+</div>
+<div class="paragraph">
+<p>湿球温度 \(T_{wb}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{wb} = \rm{FG(H,X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>露点温度 \(T_{dew}\) [℃]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[T_{dew} = \rm{TD(X)}\]
+</div>
+</div>
+<div class="paragraph">
+<p>相対湿度 \(R\) [%]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[R  = \frac{\rm{C(X)}}{\rm{PS(T_{db})}} \times 100\]
+</div>
+</div>
+<div class="paragraph">
+<p>水蒸気分圧 \(P\) [mmHg]</p>
+</div>
+<div class="stemblock">
+<div class="content">
+\[P  = \rm{CH(X)}\]
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-07 10:43:09 +0900
+Last updated 2022-08-18 17:07:08 +0900
 </div>
 </div>
 <script type="text/x-mathjax-config">

@@ -18,5 +18,8 @@
 
 = COMPAS プログラム説明書
 
->>>
+<<<
 include::SOPOS.adoc[]
+
+<<<
+include::PSY.adoc[]
