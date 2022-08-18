@@ -19,6 +19,12 @@
 = COMPAS プログラム説明書
 
 <<<
+include::NUMDAY.adoc[]
+<<<
+include::DEL.adoc[]
+<<<
+include::EQT.adoc[]
+<<<
 include::SOPOS.adoc[]
 
 <<<
