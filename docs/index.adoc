@@ -20,12 +20,18 @@
 
 <<<
 include::NUMDAY.adoc[]
+
 <<<
 include::DEL.adoc[]
+
 <<<
 include::EQT.adoc[]
+
 <<<
 include::SOPOS.adoc[]
+
+<<<
+include::FG.adoc[]
 
 <<<
 include::PSY.adoc[]
