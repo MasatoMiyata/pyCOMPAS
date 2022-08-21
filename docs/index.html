@@ -482,6 +482,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_入出力_5">5.2. 入出力</a></li>
 <li><a href="#_使用する関数_5">5.3. 使用する関数</a></li>
 <li><a href="#_計算ロジック_5">5.4. 計算ロジック</a></li>
+<li><a href="#_計算例">5.5. 計算例</a></li>
+<li><a href="#_補足説明">5.6. 補足説明</a></li>
 </ul>
 </li>
 <li><a href="#_psy_空気状態値の算出">6. PSY: 空気状態値の算出</a>
@@ -988,7 +990,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_目的_5"><a class="link" href="#_目的_5">5.1. 目的</a></h3>
 <div class="paragraph">
-<p>エンタルピーと絶対湿度から湿球温度を算出する（松尾の近似式）。</p>
+<p>エンタルピー[kcal/kg]、絶対湿度[kg/kg]を与えて、湿球温度[℃]を算出する（松尾の近似式）。</p>
 </div>
 </div>
 <div class="sect2">
@@ -1084,7 +1086,7 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </div>
 <div class="paragraph">
 <p>ここで、\( | T_{wb,new} - T_{wb} | &lt; 0.001 \) を満たすまで、
-\(T_{wb}\)の値を次のように更新し、再度 \(T_{wb,new}\)を算出する。</p>
+\(T_{wb}\)の値に更新し、再度 \(T_{wb,new}\)を算出する。</p>
 </div>
 <div class="exampleblock">
 <div class="content">
@@ -1097,6 +1099,31 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </div>
 <div class="paragraph">
 <p>繰り返し回数は最大10回までとする。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_計算例"><a class="link" href="#_計算例">5.5. 計算例</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>計算例①<br>
+\(H\) = 52.335、\(X\) = 0.0105 のとき、\(T_{wb}\) = 18.6</p>
+</li>
+<li>
+<p>計算例②<br>
+\(H\) = 20.0、\(X\) = 0.002 のとき、\(T_{wb}\) = 5.9</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_補足説明"><a class="link" href="#_補足説明">5.6. 補足説明</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>プログラムとしては松尾の近似式で終えるべきであるが、応急的にその後に収束ループを付加して精度を上げている。</p>
+</li>
+</ul>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
