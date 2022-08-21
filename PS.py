@@ -48,6 +48,15 @@ def calc_PS_Matuo(temperature:float) -> float:
 
 
 def PS(temperature:float) -> float:
+    """
+    温度より飽和水蒸気圧を求める関数
+
+    Args:
+        temperature (float): 温度[℃]
+
+    Returns:
+        float: 飽和水蒸気圧[atm]
+    """
 
     PS = calc_PS_Goff_Gratch(temperature)
     # PS = calc_PS_Matuo(temperature)
