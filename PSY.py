@@ -133,7 +133,7 @@ if __name__ == '__main__':
     # 1 J = 4.1868 cal
     
     # テスト①
-    # Tdb=26, Twb=18.8, Tdew=14.8, R=50, X=0.0105, P=17.834hPa=13.3788mmHg, H=52.9kJ/kg=12.635kcal/kg
+    # Tdb=26, Twb=18.8, Tdew=14.8, R=50, X=0.0105, P=16.818hPa=12.645mmHg, H=52.9kJ/kg=12.635kcal/kg
 
     (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,18.8)
     (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,Twb=18.8)
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     print(Tdb, Twb, Tdew, R, X, P, H)
     (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,None,None,None,0.0105)
     print(Tdb, Twb, Tdew, R, X, P, H)
-    (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,None,None,None,None,13.3788)
+    (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,None,None,None,None,12.645)
     print(Tdb, Twb, Tdew, R, X, P, H)
     (Tdb, Twb, Tdew, R, X, P, H) = PSY(26,None,None,None,None,None,12.635)
     print(Tdb, Twb, Tdew, R, X, P, H)
