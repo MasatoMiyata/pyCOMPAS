@@ -11,7 +11,25 @@ def calc_sunshine_area_ratio(
     sunshade_height: float,
     bottom_margin: float,
     roof_depth: float,
-    sidefin_depth: float):
+    sidefin_depth: float) -> float:
+    """日除けによる日照面積率の計算
+
+    Args:
+        h_sun (float): 太陽高度[rad]
+        a_sun (float): 太陽方位角[rad]
+        window_inc (float): 窓の傾斜角[rad]
+        window_azm (float): 窓の方位角[rad]
+        window_width (float): 窓の幅[m]
+        window_height (float): 窓の高さ[m]
+        sunshade_width (float): 庇の幅[m]
+        sunshade_height (float): 庇のFLからの高さ[m]
+        bottom_margin (float): FLから窓下端までの距離[m]
+        roof_depth (float): 庇の出幅[m]
+        sidefin_depth (float): 袖壁の出幅[m]
+
+    Returns:
+        float: 日照面積率[-]
+    """
 
     # 窓面積の計算[m2]
     window_area = window_width * window_height
