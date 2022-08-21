@@ -443,57 +443,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">COMPAS</div>
 <ul class="sectlevel1">
-<li><a href="#_numday_通し日数の算出">1. NUMDAY: 通し日数の算出</a>
-<ul class="sectlevel2">
-<li><a href="#_目的">1.1. 目的</a></li>
-<li><a href="#_入出力">1.2. 入出力</a></li>
-<li><a href="#_使用する関数">1.3. 使用する関数</a></li>
-<li><a href="#_計算ロジック">1.4. 計算ロジック</a></li>
-</ul>
-</li>
-<li><a href="#_del_日赤緯の算出">2. DEL: 日赤緯の算出</a>
-<ul class="sectlevel2">
-<li><a href="#_目的_2">2.1. 目的</a></li>
-<li><a href="#_入出力_2">2.2. 入出力</a></li>
-<li><a href="#_使用する関数_2">2.3. 使用する関数</a></li>
-<li><a href="#_計算ロジック_2">2.4. 計算ロジック</a></li>
-</ul>
-</li>
-<li><a href="#_eqt_均時差の算出">3. EQT: 均時差の算出</a>
-<ul class="sectlevel2">
-<li><a href="#_目的_3">3.1. 目的</a></li>
-<li><a href="#_入出力_3">3.2. 入出力</a></li>
-<li><a href="#_使用する関数_3">3.3. 使用する関数</a></li>
-<li><a href="#_計算ロジック_3">3.4. 計算ロジック</a></li>
-</ul>
-</li>
-<li><a href="#_sopos_太陽位置">4. SOPOS: 太陽位置</a>
-<ul class="sectlevel2">
-<li><a href="#_目的_4">4.1. 目的</a></li>
-<li><a href="#_入出力_4">4.2. 入出力</a></li>
-<li><a href="#_使用する関数_4">4.3. 使用する関数</a></li>
-<li><a href="#_計算ロジック_4">4.4. 計算ロジック</a></li>
-<li><a href="#_注記">4.5. 注記</a></li>
-</ul>
-</li>
-<li><a href="#_fg_エンタルピーと絶対湿度から湿球温度を算出">5. FG: エンタルピーと絶対湿度から湿球温度を算出</a>
-<ul class="sectlevel2">
-<li><a href="#_目的_5">5.1. 目的</a></li>
-<li><a href="#_入出力_5">5.2. 入出力</a></li>
-<li><a href="#_使用する関数_5">5.3. 使用する関数</a></li>
-<li><a href="#_計算ロジック_5">5.4. 計算ロジック</a></li>
-<li><a href="#_計算例">5.5. 計算例</a></li>
-<li><a href="#_補足説明">5.6. 補足説明</a></li>
-</ul>
-</li>
-<li><a href="#_psy_空気状態値の算出">6. PSY: 空気状態値の算出</a>
-<ul class="sectlevel2">
-<li><a href="#_目的_6">6.1. 目的</a></li>
-<li><a href="#_入出力_6">6.2. 入出力</a></li>
-<li><a href="#_使用する関数_6">6.3. 使用する関数</a></li>
-<li><a href="#_計算ロジック_6">6.4. 計算ロジック</a></li>
-</ul>
-</li>
+<li><a href="#_numday_通し日数の算出">1. NUMDAY: 通し日数の算出</a></li>
+<li><a href="#_del_日赤緯の算出">2. DEL: 日赤緯の算出</a></li>
+<li><a href="#_eqt_均時差の算出">3. EQT: 均時差の算出</a></li>
+<li><a href="#_sopos_太陽位置">4. SOPOS: 太陽位置</a></li>
+<li><a href="#_ps_飽和水蒸気圧の算出">5. PS: 飽和水蒸気圧の算出</a></li>
+<li><a href="#_fg_湿球温度の算出">6. FG: 湿球温度の算出</a></li>
+<li><a href="#_psy_空気状態値の算出">7. PSY: 空気状態値の算出</a></li>
 </ul>
 </div>
 </div>
@@ -985,18 +941,183 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_fg_エンタルピーと絶対湿度から湿球温度を算出"><a class="link" href="#_fg_エンタルピーと絶対湿度から湿球温度を算出">5. FG: エンタルピーと絶対湿度から湿球温度を算出</a></h2>
+<h2 id="_ps_飽和水蒸気圧の算出"><a class="link" href="#_ps_飽和水蒸気圧の算出">5. PS: 飽和水蒸気圧の算出</a></h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_目的_5"><a class="link" href="#_目的_5">5.1. 目的</a></h3>
 <div class="paragraph">
-<p>エンタルピー[kcal/kg]、絶対湿度[kg/kg]を与えて、湿球温度[℃]を算出する（松尾の近似式）。</p>
+<p>温度[℃]を与えて、そのときの飽和水蒸気圧[atm]を算出する。<br>
+2つのロジックを用意している。</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_入出力_5"><a class="link" href="#_入出力_5">5.2. 入出力</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">表 10. 入力</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 57.1428%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">変数名</th>
+<th class="tableblock halign-left valign-top">説明</th>
+<th class="tableblock halign-left valign-top">単位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(T\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">温度</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">℃</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">表 11. 出力</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 57.1428%;">
+<col style="width: 28.5715%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">変数名</th>
+<th class="tableblock halign-left valign-top">説明</th>
+<th class="tableblock halign-left valign-top">単位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\(P_{s}\)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">飽和水蒸気圧</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">atm</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_使用する関数_5"><a class="link" href="#_使用する関数_5">5.3. 使用する関数</a></h3>
+<div class="paragraph">
+<p>なし</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_計算ロジック_5"><a class="link" href="#_計算ロジック_5">5.4. 計算ロジック</a></h3>
+<div class="sect3">
+<h4 id="_goff_gratch_原式"><a class="link" href="#_goff_gratch_原式">5.4.1. Goff-Gratch 原式</a></h4>
+<div class="paragraph">
+<p>\(T\)が0℃以上である場合は、次式を適用する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[Z = \frac{373.16}{273.16 + T} \\
+Y = Z - 1.0 \\
+X = -7.90298Y + 5.02808\log_{10}(Z) - 1.3816 \cdot 10^{-7}(10^{11.344\frac{Y}{Z}}-1.0) + 8.1328 \cdot 10^{-3}(10^{-3.49149Y}-1) \\
+P_{S} = 10^{ X }\]
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>\(T\)が0℃より小さい場合は、次式を適用する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[Z = \frac{273.16}{273.16 + T} \\
+Y = Z - 1.0 \\
+Z = -9.09718Y - 3.56654\log_{10}(Z) + 0.876793\frac{Y}{Z} - 2.219877 \\
+P_{S} = 10^{ X }\]
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_松尾の多項近似式"><a class="link" href="#_松尾の多項近似式">5.4.2. 松尾の多項近似式</a></h4>
+<div class="paragraph">
+<p>\(T\)が0℃以上である場合は、次式を適用する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[A_{0} = -5.111336 \\
+A_{1} = 7.265429 \cdot 10^{-2} \\
+A_{2} = -2.986334 \cdot 10^{-4} \\
+A_{3} = 1.113417 \cdot 10^{-6} \\
+A_{4} = -3.429809 \cdot 10^{-9} \\
+A_{5} = 6.181450 \cdot 10^{-12} \\
+
+P_{S} = \exp(A_{0}+T(A_{1}+T(A_{2}+T(A_{3}+T(A_{4}+A_{5}T))))\]
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>\(T\)が0℃より小さい場合は、次式を適用する。</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="stemblock">
+<div class="content">
+\[B_{0} = -5.111472 \\
+B_{1} = 8.233478 \cdot 10^{-2} \\
+B_{2} = -3.069412 \cdot 10^{-4} \\
+B_{3} = 9.639090 \cdot 10^{-7} \\
+B_{4} = -6.426140 \cdot 10^{-9} \\
+
+P_{S} = \exp(B_{0}+T(B_{1}+T(B_{2}+T(B_{3}+B_{4}T))))\]
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_計算例"><a class="link" href="#_計算例">5.5. 計算例</a></h3>
+<div class="imageblock">
+<div class="content">
+<img src="./img/PS_example.png" alt="計算例">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_補足説明"><a class="link" href="#_補足説明">5.6. 補足説明</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>飽和水蒸気圧の算出式として2種類（Goff-Gratch原式、松尾の近似式）を用意しているが、
+Goff-Gratch原式の方は式が複雑な形であるので、多少の計算時間を要す。松尾の近似式の方は、
+-50℃≦\(T\)≦100℃においては最小相対誤差\(1.5×10^(-5)\)の精度であり、計算時間も1/3程度である。</p>
+</li>
+<li>
+<p>松尾のmini-max多項式近似式は微分が容易であるんおで、newton法による解法への応用が便利である。</p>
+</li>
+</ul>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_fg_湿球温度の算出"><a class="link" href="#_fg_湿球温度の算出">6. FG: 湿球温度の算出</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_目的_6"><a class="link" href="#_目的_6">6.1. 目的</a></h3>
+<div class="paragraph">
+<p>エンタルピー[kcal/kg]、絶対湿度[kg/kg]を与えて、湿球温度[℃]を算出する（松尾の近似式）。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_入出力_6"><a class="link" href="#_入出力_6">6.2. 入出力</a></h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">表 12. 入力</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 57.1428%;">
@@ -1023,7 +1144,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">表 11. 出力</caption>
+<caption class="title">表 13. 出力</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 57.1428%;">
@@ -1046,7 +1167,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_使用する関数_5"><a class="link" href="#_使用する関数_5">5.3. 使用する関数</a></h3>
+<h3 id="_使用する関数_6"><a class="link" href="#_使用する関数_6">6.3. 使用する関数</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1056,7 +1177,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_計算ロジック_5"><a class="link" href="#_計算ロジック_5">5.4. 計算ロジック</a></h3>
+<h3 id="_計算ロジック_6"><a class="link" href="#_計算ロジック_6">6.4. 計算ロジック</a></h3>
 <div class="paragraph">
 <p>松尾の近似式より、湿球温度 \(T_{wb}\) [℃]を算出する。</p>
 </div>
@@ -1102,7 +1223,7 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </div>
 </div>
 <div class="sect2">
-<h3 id="_計算例"><a class="link" href="#_計算例">5.5. 計算例</a></h3>
+<h3 id="_計算例_2"><a class="link" href="#_計算例_2">6.5. 計算例</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1117,7 +1238,7 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </div>
 </div>
 <div class="sect2">
-<h3 id="_補足説明"><a class="link" href="#_補足説明">5.6. 補足説明</a></h3>
+<h3 id="_補足説明_2"><a class="link" href="#_補足説明_2">6.6. 補足説明</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1130,18 +1251,18 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </div>
 </div>
 <div class="sect1">
-<h2 id="_psy_空気状態値の算出"><a class="link" href="#_psy_空気状態値の算出">6. PSY: 空気状態値の算出</a></h2>
+<h2 id="_psy_空気状態値の算出"><a class="link" href="#_psy_空気状態値の算出">7. PSY: 空気状態値の算出</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_目的_6"><a class="link" href="#_目的_6">6.1. 目的</a></h3>
+<h3 id="_目的_7"><a class="link" href="#_目的_7">7.1. 目的</a></h3>
 <div class="paragraph">
 <p>乾球温度[℃]と「湿球温度[℃]、露点温度[℃]、相対湿度[%]、絶対湿度[kg/kg]、水蒸気分圧[mmHg]、エンタルピー[kcal/kg]」のいずれかを与えて、乾球温度[℃]、湿球温度[℃]、露点温度[℃]、相対湿度[%]、絶対湿度[kg/kg]、水蒸気分圧[mmHg]、エンタルピー[kcal/kg]を算出する。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_入出力_6"><a class="link" href="#_入出力_6">6.2. 入出力</a></h3>
+<h3 id="_入出力_7"><a class="link" href="#_入出力_7">7.2. 入出力</a></h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">表 12. 入力</caption>
+<caption class="title">表 14. 入力</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 57.1428%;">
@@ -1193,7 +1314,7 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">表 13. 出力</caption>
+<caption class="title">表 15. 出力</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 57.1428%;">
@@ -1246,7 +1367,7 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </table>
 </div>
 <div class="sect2">
-<h3 id="_使用する関数_6"><a class="link" href="#_使用する関数_6">6.3. 使用する関数</a></h3>
+<h3 id="_使用する関数_7"><a class="link" href="#_使用する関数_7">7.3. 使用する関数</a></h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1259,9 +1380,9 @@ T_{wb,new} = \frac{ H - 597.3 X_{S} }{ 0.240 - 0.559 X_{S} + X}\]
 </div>
 </div>
 <div class="sect2">
-<h3 id="_計算ロジック_6"><a class="link" href="#_計算ロジック_6">6.4. 計算ロジック</a></h3>
+<h3 id="_計算ロジック_7"><a class="link" href="#_計算ロジック_7">7.4. 計算ロジック</a></h3>
 <div class="sect3">
-<h4 id="_サブ関数の定義"><a class="link" href="#_サブ関数の定義">6.4.1. サブ関数の定義</a></h4>
+<h4 id="_サブ関数の定義"><a class="link" href="#_サブ関数の定義">7.4.1. サブ関数の定義</a></h4>
 <div class="paragraph">
 <p>計算に使用するサブ関数を次式で定義する。</p>
 </div>
@@ -1397,7 +1518,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 </div>
 <div class="sect3">
-<h4 id="_湿球温度が入力された場合"><a class="link" href="#_湿球温度が入力された場合">6.4.2. 湿球温度が入力された場合</a></h4>
+<h4 id="_湿球温度が入力された場合"><a class="link" href="#_湿球温度が入力された場合">7.4.2. 湿球温度が入力された場合</a></h4>
 <div class="paragraph">
 <p>乾球温度 \(T_{db}\) と湿球温度 \(T_{wb}\) が入力された場合は、次式で出力を算出する。</p>
 </div>
@@ -1463,7 +1584,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 </div>
 <div class="sect3">
-<h4 id="_露点温度が入力された場合"><a class="link" href="#_露点温度が入力された場合">6.4.3. 露点温度が入力された場合</a></h4>
+<h4 id="_露点温度が入力された場合"><a class="link" href="#_露点温度が入力された場合">7.4.3. 露点温度が入力された場合</a></h4>
 <div class="paragraph">
 <p>乾球温度 \(T_{db}\) と露点温度 \(T_{dew}\) が入力された場合は、次式で出力を算出する。</p>
 </div>
@@ -1521,7 +1642,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 </div>
 <div class="sect3">
-<h4 id="_相対湿度が入力された場合"><a class="link" href="#_相対湿度が入力された場合">6.4.4. 相対湿度が入力された場合</a></h4>
+<h4 id="_相対湿度が入力された場合"><a class="link" href="#_相対湿度が入力された場合">7.4.4. 相対湿度が入力された場合</a></h4>
 <div class="paragraph">
 <p>乾球温度 \(T_{db}\) と相対湿度 \(R\) が入力された場合は、次式で出力を算出する。</p>
 </div>
@@ -1579,7 +1700,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 </div>
 <div class="sect3">
-<h4 id="_絶対湿度が入力された場合"><a class="link" href="#_絶対湿度が入力された場合">6.4.5. 絶対湿度が入力された場合</a></h4>
+<h4 id="_絶対湿度が入力された場合"><a class="link" href="#_絶対湿度が入力された場合">7.4.5. 絶対湿度が入力された場合</a></h4>
 <div class="paragraph">
 <p>乾球温度 \(T_{db}\) と絶対湿度 \(X\) が入力された場合は、次式で出力を算出する。</p>
 </div>
@@ -1629,7 +1750,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 </div>
 <div class="sect3">
-<h4 id="_水蒸気分圧mmhgが入力された場合"><a class="link" href="#_水蒸気分圧mmhgが入力された場合">6.4.6. 水蒸気分圧[mmHg]が入力された場合</a></h4>
+<h4 id="_水蒸気分圧mmhgが入力された場合"><a class="link" href="#_水蒸気分圧mmhgが入力された場合">7.4.6. 水蒸気分圧[mmHg]が入力された場合</a></h4>
 <div class="paragraph">
 <p>乾球温度 \(T_{db}\) と水蒸気分圧 \(P\) が入力された場合は、次式で出力を算出する。</p>
 </div>
@@ -1679,7 +1800,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 </div>
 <div class="sect3">
-<h4 id="_エンタルピーが入力された場合"><a class="link" href="#_エンタルピーが入力された場合">6.4.7. エンタルピーが入力された場合</a></h4>
+<h4 id="_エンタルピーが入力された場合"><a class="link" href="#_エンタルピーが入力された場合">7.4.7. エンタルピーが入力された場合</a></h4>
 <div class="paragraph">
 <p>乾球温度 \(T_{db}\) とエンタルピー \(H\) が入力された場合は、次式で出力を算出する。</p>
 </div>
@@ -1734,7 +1855,7 @@ log(X)(-0.7905916 + log(X)(-0.2411693-0.01389958log(X)))) + \\
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-18 18:50:59 +0900
+Last updated 2022-08-21 10:02:50 +0900
 </div>
 </div>
 <script type="text/x-mathjax-config">

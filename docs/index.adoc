@@ -1,7 +1,7 @@
 :lang: ja
 :doctype: book
 :toc: left
-:toclevels: 2
+:toclevels: 1
 :toc-title: COMPAS
 :sectnums: 
 :sectnumlevels: 4
@@ -12,7 +12,7 @@
 :example-caption: 例
 :table-caption: 表
 :figure-caption: 図
-:docname: = Builelib manual
+:docname: = COMPAS manual
 :stem: latexmath
 :xrefstyle: short
 
@@ -29,6 +29,9 @@ include::EQT.adoc[]
 
 <<<
 include::SOPOS.adoc[]
+
+<<<
+include::PS.adoc[]
 
 <<<
 include::FG.adoc[]
