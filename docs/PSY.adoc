@@ -358,3 +358,11 @@ stem:[T_{db}]=7, stem:[T_{wb}]=6, stem:[T_{dew}]=4.9, stem:[R]=86.7, stem:[X]=0.
 === 補足説明
 
 * 乾球温度は常に与えなければならない。
+
+
+=== ソースコード
+
+[source,python]
+----
+include::../PSY.py[]
+----

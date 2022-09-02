@@ -9,6 +9,7 @@
 :linkattrs:
 :icons: font
 :source-highlighter: coderay
+// :source-highlighter: rouge
 :example-caption: 例
 :table-caption: 表
 :figure-caption: 図
