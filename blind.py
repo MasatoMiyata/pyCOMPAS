@@ -1,5 +1,4 @@
 import math
-import numpy as np
 
 def calc_blind_transmittance(slat_absorption: float, slat_spacing: float,
                              slat_width: float, profile_angle_rad: float,
@@ -26,7 +25,7 @@ def calc_blind_transmittance(slat_absorption: float, slat_spacing: float,
     bc = slat_width
     cd = slat_spacing
     ad = slat_width
-    be = max(slat_spacing / (cos_t * tan_p + sin_t), slat_width)
+    be = min(slat_spacing / (cos_t * tan_p + sin_t), slat_width)
     ce = max(bc - be, 0.0)
     ac = math.sqrt((slat_width * cos_t) ** 2 + (slat_spacing - slat_width * sin_t) ** 2)
     ae = math.sqrt((be * cos_t) ** 2 + (slat_spacing - be * sin_t) ** 2)
@@ -78,6 +77,6 @@ if __name__ == '__main__':
     trance, tau_pass_through, reflect = calc_blind_transmittance(slat_absorption=0.5, slat_width=25, slat_spacing=21.5,
                                    profile_angle_rad=math.radians(10), slat_angle_rad=math.radians(0))
     # 吸収率の計算
-    absorpt = max(1.0 - trance - tau_pass_through - reflect, 0.0)
+    absorpt = max(1.0 - trance - reflect, 0.0)
 
     print(trance, absorpt, reflect)
