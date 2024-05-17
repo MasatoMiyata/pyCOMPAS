@@ -1,5 +1,8 @@
 import math
 
+# 二重ガラスの間に室内空気を通過させる、いわゆるAir-flow windowの、
+# 各部材温度、通過空気出口温度を計算する
+
 def airflw(
         to: float, ti: float, ao: float, ai: float, ar: float, ac: float,
         q1: float, q2: float, q3: float, xl: float, afv: float, ib: float
