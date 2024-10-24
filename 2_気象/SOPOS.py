@@ -9,7 +9,12 @@ plt.rcParams['grid.linewidth'] = 0.5
 
 from DEL import DEL
 from EQT import EQT
-from NUMDAY import NUMDAY
+
+def NUMDAY(M,N):
+
+    y = 30*(M-1)+(M+M/8)/2-(M+7)/10+N
+
+    return y
 
 
 def SOPOS(LA:float,LO:float,M:int,N:int,HJ:int) -> Tuple[float, float, float]:
